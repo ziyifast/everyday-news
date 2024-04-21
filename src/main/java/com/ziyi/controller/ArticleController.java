@@ -1,9 +1,11 @@
 package com.ziyi.controller;
 
+import com.ziyi.pojo.Article;
 import com.ziyi.pojo.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ziyi.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zhouYi
@@ -14,8 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/article")
 public class ArticleController {
 
-    @GetMapping("/listAll")
-    public Result listAll() {
-        return Result.success("所有文章内容");
+    @Autowired
+    private ArticleService articleService;
+
+
+    @PostMapping("/add")
+    public Result add(@RequestBody @Validated Article article) {
+        articleService.add(article);
+        return Result.success("");
     }
 }
