@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +30,13 @@ public class ArticleServiceImpl implements ArticleService {
         Integer uid = (Integer) claims.get("id");
         article.setCreateUser(uid);
         articleMapper.add(article);
+    }
+
+    @Override
+    public List<Article> list(Integer categoryId, String state) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Integer uid = (Integer) claims.get("id");
+        return articleMapper.list(uid, categoryId, state);
     }
 
 }
