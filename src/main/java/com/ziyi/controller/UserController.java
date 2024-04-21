@@ -1,13 +1,19 @@
 package com.ziyi.controller;
 
 import com.ziyi.pojo.Result;
+import com.ziyi.pojo.User;
 import com.ziyi.service.UserService;
+import com.ziyi.utils.JwtUtil;
+import com.ziyi.utils.Md5Util;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zhouYi
@@ -32,5 +38,22 @@ public class UserController {
         //注册用户
         userService.register(username, password);
         return Result.success();
+    }
+
+    @PostMapping("/login")
+    public Result login(@Pattern(regexp="^\\S{5,16}$") String username, @Pattern(regexp="^\\S{5,16}$")String password) {
+        if (userService.findByUsername(username) == null) {
+            return Result.error("用户名不存在");
+        }
+        //校验密码
+        User user = userService.findByUsername(username);
+        if (!Md5Util.checkPassword(password, user.getPassword())) {
+            return Result.error("密码错误");
+        }
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", username);
+        claims.put("id", user.getId());
+        String token = JwtUtil.genToken(claims);
+        return Result.success(token);
     }
 }
