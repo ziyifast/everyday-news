@@ -5,6 +5,7 @@ import com.ziyi.pojo.User;
 import com.ziyi.service.UserService;
 import com.ziyi.utils.JwtUtil;
 import com.ziyi.utils.Md5Util;
+import com.ziyi.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -56,9 +57,9 @@ public class UserController {
     }
 
     @GetMapping("/userInfo")
-    public Result<User> getUserInfo(@RequestHeader(name="Authorization") String token) {
-        Map<String, Object> map = JwtUtil.parseToken(token);
-        String username = (String) map.get("username");
+    public Result<User> getUserInfo(/*@RequestHeader(name="Authorization") String token*/) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        String username = (String) claims.get("username");
         User user = userService.findByUsername(username);
         return Result.success(user);
     }

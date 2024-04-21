@@ -1,6 +1,7 @@
 package com.ziyi.interceptors;
 
 import com.ziyi.utils.JwtUtil;
+import com.ziyi.utils.ThreadLocalUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("Authorization");
         try {
-            JwtUtil.parseToken(token);
+            Map<String, Object> claim = JwtUtil.parseToken(token);
+            //将用户信息存入ThreadLocal，防止其他参数重复传递与获取
+            ThreadLocalUtil.set(claim);
             //没有报错表明解析正常，返回true，放行
             return true;
         } catch (Exception e) {
@@ -31,4 +34,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
     }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        //请求结束后清除ThreadLocal，防止内存泄露
+        ThreadLocalUtil.remove();
+    }
 }
+
+
+
