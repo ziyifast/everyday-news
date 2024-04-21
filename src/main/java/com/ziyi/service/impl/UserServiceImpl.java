@@ -7,6 +7,8 @@ import com.ziyi.utils.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * @author zhouYi
  * @description TODO
@@ -28,5 +30,12 @@ public class UserServiceImpl implements UserService {
         //对密码进行编码加密
         String md5String = Md5Util.getMD5String(password);
         userMapper.add(username, md5String);
+    }
+
+    //更新用户信息
+    @Override
+    public void update(User user) {
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.update(user);
     }
 }

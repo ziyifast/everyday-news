@@ -63,4 +63,11 @@ public class UserController {
         User user = userService.findByUsername(username);
         return Result.success(user);
     }
+
+    //更新用户信息
+    @PutMapping("/update")
+    public Result updateUser(@RequestBody @Validated User user) {
+        userService.update(user);
+        return Result.success();
+    }
 }
