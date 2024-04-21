@@ -23,6 +23,7 @@ public class FileController {
         String originalFilename = file.getOriginalFilename();
         String filename = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
         file.transferTo(new File("/Users/ziyi2/Desktop/local-pro/files/" + filename));
-        return Result.success("可访问的URL地址...");
+        //TODO 替换为OSS服务
+        return Result.success("/Users/ziyi2/Desktop/local-pro/files/"+ filename);
     }
 }

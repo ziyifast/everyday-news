@@ -4,6 +4,8 @@ import com.ziyi.utils.JwtUtil;
 import com.ziyi.utils.ThreadLocalUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -17,6 +19,9 @@ import java.util.Map;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     //校验Token
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -26,6 +31,10 @@ public class LoginInterceptor implements HandlerInterceptor {
             //将用户信息存入ThreadLocal，防止其他参数重复传递与获取
             ThreadLocalUtil.set(claim);
             //没有报错表明解析正常，返回true，放行
+            //校验token与redis中的token是否一致
+            if (redisTemplate.opsForValue().get(token) == null) {
+                throw new RuntimeException("token失效");
+            }
             return true;
         } catch (Exception e) {
             response.setStatus(401);
