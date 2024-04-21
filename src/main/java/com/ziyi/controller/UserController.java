@@ -7,7 +7,9 @@ import com.ziyi.utils.JwtUtil;
 import com.ziyi.utils.Md5Util;
 import com.ziyi.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,6 +70,43 @@ public class UserController {
     @PutMapping("/update")
     public Result updateUser(@RequestBody @Validated User user) {
         userService.update(user);
+        return Result.success();
+    }
+
+
+    @PutMapping("/updateAvator")
+    public Result updateAvator(@RequestParam @URL String avatorUrl) {
+        userService.updateAvator(avatorUrl);
+        return Result.success();
+    }
+
+    @PutMapping("/updatePwd")
+    public Result updatePassword(@RequestBody Map<String, String> params) {
+        //参数校验
+        String oldPwd = params.get("old_pwd");
+        String newPwd = params.get("new_pwd");
+        String rePwd = params.get("re_pwd");
+        if (!(StringUtils.hasLength(oldPwd) && StringUtils.hasLength(newPwd) && StringUtils.hasLength(rePwd))) {
+            return Result.error("参数错误");
+        }
+        if (!newPwd.equals(rePwd)) {
+            return Result.error("两次密码不一致");
+        }
+        //校验新密码是否合法
+        if (!newPwd.matches("^\\S{5,16}$")) {
+            return Result.error("密码必须为5-16位非空字符");
+        }
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String username = (String) map.get("username");
+        User user = userService.findByUsername(username);
+        if (!Md5Util.checkPassword(oldPwd, user.getPassword())) {
+            return Result.error("原密码错误");
+        }
+        //新密码不能和原密码相同
+        if (Md5Util.checkPassword(newPwd, userService.findByUsername(username).getPassword())) {
+            return Result.error("新密码不能和原密码相同");
+        }
+        userService.updatePwd(newPwd);
         return Result.success();
     }
 }

@@ -4,10 +4,12 @@ import com.ziyi.mapper.UserMapper;
 import com.ziyi.pojo.User;
 import com.ziyi.service.UserService;
 import com.ziyi.utils.Md5Util;
+import com.ziyi.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * @author zhouYi
@@ -37,5 +39,20 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         user.setUpdateTime(LocalDateTime.now());
         userMapper.update(user);
+    }
+
+    //更新用户头像
+    @Override
+    public void updateAvator(String avatorUrl) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Integer uid = (Integer) claims.get("id");
+        userMapper.updateAvator(avatorUrl, uid);
+    }
+
+    @Override
+    public void updatePwd(String newPwd) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Integer uid = (Integer) claims.get("id");
+        userMapper.updatePwd(Md5Util.getMD5String(newPwd), uid);
     }
 }

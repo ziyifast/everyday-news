@@ -14,4 +14,8 @@ public interface UserService {
     void register(String username, String password);
 
     void update(User user);
+
+    void updateAvator(String avatorUrl);
+
+    void updatePwd(String newPwd);
 }
