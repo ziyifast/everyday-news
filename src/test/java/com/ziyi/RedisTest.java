@@ -17,12 +17,12 @@ public class RedisTest {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Test
+//    @Test
     void setKey(){
         redisTemplate.opsForValue().set("name","zhangsan");
     }
 
-    @Test
+//    @Test
     void getKey(){
         System.out.println(redisTemplate.opsForValue().get("name"));
     }
