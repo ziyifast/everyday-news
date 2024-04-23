@@ -13,4 +13,7 @@ npm install axios
 
 # sass :css的扩展包
 npm install sass -D
+
+# vue-router
+npm install vue-router@4
 ```

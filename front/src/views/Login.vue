@@ -2,7 +2,9 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import {userRegisterService, userLoginService} from '@/api/user.js'
 import {ElMessage} from 'element-plus'
-
+// 引入路由
+import {useRouter} from 'vue-router'
+const router = useRouter()
 
 //用户登录接口
 // const login = async () => {
@@ -36,6 +38,8 @@ const login = async () => {
     if (result.code === 0) {
         // alert(result.msg ? result.msg : '登录成功')
         ElMessage.success(result.msg ? result.msg : '登录成功')
+        //路由跳转
+        router.push('/')
     }else {
         // alert('登录失败')
         ElMessage.error('登录失败')
