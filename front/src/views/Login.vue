@@ -1,5 +1,6 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
+import {userRegisterService} from '@/api/user.js'
 import { ref } from 'vue'
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
@@ -11,7 +12,15 @@ const registerData = ref({
     confirmPassword: ''
 })
 
-
+//用户注册接口
+const register = async () => {
+    let result = await userRegisterService(registerData.value)
+    if (result.code === 0) {
+        alert(result.msg ? result.msg : '注册成功')
+    }else {
+        alert('注册失败')
+    }
+}
 
 
 //登录表单验证规则
@@ -60,7 +69,7 @@ const registerRules = ({
                 </el-form-item>
                 <!-- 注册按钮 -->
                 <el-form-item>
-                    <el-button class="button" type="primary" auto-insert-space>
+                    <el-button class="button" type="primary" auto-insert-space @click="register()">
                         注册
                     </el-button>
                 </el-form-item>
