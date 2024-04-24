@@ -1,5 +1,4 @@
 <script setup>
-    import LoginVue from './views/Login.vue';
 </script>
 
 <template>

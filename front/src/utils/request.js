@@ -3,7 +3,8 @@
 //导入axios  npm install axios
 import axios from 'axios';
 import { ElMessage } from 'element-plus'
-import {useTokenStore} from '@/store/token.js';
+import { useTokenStore } from '@/store/token.js';
+import router from '@/router'
 //定义一个变量,记录公共的前缀  ,  baseURL
 const baseURL = '/api';
 const instance = axios.create({ baseURL })
@@ -35,9 +36,15 @@ instance.interceptors.response.use(
         return Promise.reject(result.data);
     },
     err => {
-        //异步的状态转化成失败的状态
-        ElMessage.error('服务异常')
-        return Promise.reject(err);
+        if (err.response.status === 401) {
+            ElMessage.error('未登录');
+            //跳转到登录页面
+            router.push('/login');
+        } else {
+            //异步的状态转化成失败的状态
+            ElMessage.error('服务异常')
+            return Promise.reject(err);
+        }
     }
 )
 

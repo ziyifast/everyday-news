@@ -3,12 +3,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import {userRegisterService, userLoginService} from '@/api/user.js'
 import {ElMessage} from 'element-plus'
 // 引入路由
-import {useRouter} from 'vue-router'
-const router = useRouter()
-
-//用户登录接口
-// const login = async () => {
-//     let result = await userLoginService(registerData.value)
+import router from '@/router/index.js'
 import { ref } from 'vue'
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)

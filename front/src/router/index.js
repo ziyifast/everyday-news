@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+//导入vue-router
+import { createRouter, createWebHistory } from 'vue-router'
 
 
 //导入组件
@@ -12,10 +13,6 @@ import UserResetPasswordVue from '@/views/user/UserResetPassword.vue'
 
 
 const routes = [
-    {
-        path: '/login',
-        component: LoginVue,
-    },
     {
         path: '/',
         component: LayoutVue,
@@ -42,13 +39,17 @@ const routes = [
                 component: UserResetPasswordVue
             }
         ]
+    },
+    {
+        path: '/login',
+        component: LoginVue,
     }
 ]
 
+//创建路由器
 const router = createRouter({
-    routes: routes,
-    history: createWebHistory()
+    history: createWebHistory(),
+    routes: routes
 });
 
-
-export default router;
+export default router
