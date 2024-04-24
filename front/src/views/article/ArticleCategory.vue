@@ -3,9 +3,10 @@ import {
     Edit,
     Delete
 } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage,ElMessageBox} from 'element-plus'
 import { ref } from 'vue'
-import { articleCategoryListService,addArticleCategoryService,updateArticleCategoryService } from '@/api/article.js'
+import { articleCategoryListService,addArticleCategoryService,updateArticleCategoryService,
+    deleteArticleCategoryService } from '@/api/article.js'
 //获取文章分类
 const getArticleCategoryList = async () => {
     let result = await articleCategoryListService()
@@ -81,6 +82,35 @@ const addArticleCategory = async () => {
     ElMessage.error(result.message ? '' : '服务异常')
     return
 }
+
+//删除文章分类
+//删除分类  给删除按钮绑定事件
+const deleteCategory = (id) => {
+    ElMessageBox.confirm(
+        '你确认删除该分类信息吗？',
+        '温馨提示',
+        {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(async () => {
+            //用户点击了确认
+            let result = await deleteArticleCategoryService(id)
+            ElMessage.success(result.message?result.message:'删除成功')
+            //再次调用getAllCategory，获取所有文章分类
+            getArticleCategoryList()
+            return
+        })
+        .catch(() => {
+            //用户点击了取消
+            ElMessage({
+                type: 'info',
+                message: '取消删除',
+            })
+        })
+}
  
 //控制弹窗
 </script>
@@ -101,7 +131,7 @@ const addArticleCategory = async () => {
             <el-table-column label="操作" width="100">
                 <template #default="{ row }">
                     <el-button :icon="Edit" circle plain type="primary" @click="title='修改分类';updateCategoryEcho(row);dialogVisible = true;" ></el-button>
-                    <el-button :icon="Delete" circle plain type="danger"></el-button>
+                    <el-button :icon="Delete" circle plain type="danger" @click="deleteCategory(row.id)"></el-button>
                 </template>
             </el-table-column>
             <template #empty>
