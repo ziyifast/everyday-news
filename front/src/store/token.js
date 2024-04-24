@@ -13,12 +13,12 @@ export const useTokenStore = defineStore('token', () => {
     const setToken = (newToken) => {
         token.value = newToken
     }
-    const removeToken = () =>{
+    const removeToken = () => {
         token.value = ''
     }
-    return {
-        token,
-        setToken,
-        removeToken
-    }
-})
+    return {token,setToken,removeToken}
+},
+    //开启pinia持久化
+    {
+        persist: true
+    });
