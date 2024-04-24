@@ -3,10 +3,25 @@
 //导入axios  npm install axios
 import axios from 'axios';
 import { ElMessage } from 'element-plus'
+import {useTokenStore} from '@/store/token.js';
 //定义一个变量,记录公共的前缀  ,  baseURL
 const baseURL = '/api';
 const instance = axios.create({ baseURL })
 
+//添加请求拦截器
+instance.interceptors.request.use(
+    config => {
+        const token = useTokenStore().token
+        if (token) {
+            //添加token
+            config.headers['Authorization'] = token;
+        }
+        return config
+    },
+    err => {
+        return Promise.reject(err);
+    }
+)
 
 //添加响应拦截器
 instance.interceptors.response.use(
