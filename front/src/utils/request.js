@@ -21,7 +21,7 @@ instance.interceptors.response.use(
     },
     err => {
         //异步的状态转化成失败的状态
-        alert('服务异常');
+        ElMessage.error('服务异常')
         return Promise.reject(err);
     }
 )

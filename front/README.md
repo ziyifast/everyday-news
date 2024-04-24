@@ -16,4 +16,7 @@ npm install sass -D
 
 # vue-router
 npm install vue-router@4
+
+# 安装pinia管理库（存储token，中转站）
+npm install pinia
 ```

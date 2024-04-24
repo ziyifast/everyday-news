@@ -33,11 +33,16 @@ const register = async () => {
 }
 
 //用户登录接口
+//引入token
+import {useTokenStore} from '@/store/token.js'
+const useToken= useTokenStore()
 const login = async () => {
     let result = await userLoginService(registerData.value)
     if (result.code === 0) {
         // alert(result.msg ? result.msg : '登录成功')
         ElMessage.success(result.msg ? result.msg : '登录成功')
+        //存储token
+        useToken.setToken(result.data)
         //路由跳转
         router.push('/')
     }else {
