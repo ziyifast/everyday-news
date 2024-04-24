@@ -20,4 +20,6 @@ public interface CategoryService {
     Category getCategoryDetail(Integer id);
 
     void update(Category category);
+
+    void delete(Integer id);
 }
