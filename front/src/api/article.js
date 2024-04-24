@@ -24,3 +24,8 @@ export const updateArticleCategoryService = (articleCategory) => {
 export const deleteArticleCategoryService = (id) => {
     return request.delete('/category/delete?id=' + id)
 }
+
+//获取文章列表数据
+export const articleListService = (params) => {
+    return request.get('/article/list', { params })
+}
