@@ -22,4 +22,7 @@ npm install pinia
 
 # 安装pinia持久化，防止页面刷新token丢失（pinia数据默认存储在内存中）
 npm install pinia-persistedstate-plugin
+
+# 引入富文本编辑器
+npm install @vueup/vue-quill@latest --save
 ```
