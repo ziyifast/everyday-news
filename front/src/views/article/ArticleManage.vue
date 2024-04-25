@@ -77,7 +77,7 @@ const getArticleList = async () => {
     let params = {
         pageNum: pageNum.value,
         pageSize: pageSize.value,
-        categoryId: categoryId.value ? categoryId : null,
+        categoryId: categoryId.value ? categoryId.value : null,
         state: state.value ? state.value : null
     }
     let result = await articleListService(params)
@@ -136,8 +136,8 @@ getArticleList();
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary">搜索</el-button>
-                <el-button>重置</el-button>
+                <el-button type="primary" @click="getArticleList()">搜索</el-button>
+                <el-button @click="categoryId = '', state = ''">重置</el-button>
             </el-form-item>
         </el-form>
         <!-- 文章列表 -->
