@@ -10,6 +10,17 @@ import {
     CaretBottom
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
+//获取用户信息
+import useUserInfoStore from '@/store/user.js'
+import {getUserInfoService } from "@/api/user.js";
+const userInfoStore = useUserInfoStore()
+const getUserInfo = async () => {
+    let result = await getUserInfoService();
+    //存储用户信息
+    userInfoStore.setUserInfo(result.data)
+}
+getUserInfo();
+
 </script>
 
 <template>
@@ -63,7 +74,7 @@ import avatar from '@/assets/default.png'
         <el-container>
             <!-- 头部区域 -->
             <el-header>
-                <div>ziyi程序员：<strong>yi</strong></div>
+                <div>ziyi程序员：<strong>{{userInfoStore.info.nickname ? userInfoStore.info.nickname : userInfoStore.info.username}}</strong></div>
                 <el-dropdown placement="bottom-end">
                     <span class="el-dropdown__box">
                         <el-avatar :src="avatar" />
