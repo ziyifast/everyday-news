@@ -198,10 +198,7 @@ const addArticle = async () => {
       <el-table-column label="状态" prop="state"></el-table-column>
       <el-table-column label="操作" width="100">
         <template #default="{ row }">
-          <el-button :icon="Edit" circle plain type="primary">
-
-
-          </el-button>
+          <el-button :icon="Edit" circle plain type="primary"></el-button>
 
 
           <el-button :icon="Delete" circle plain type="danger"></el-button>
