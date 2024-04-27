@@ -84,7 +84,8 @@ public class UserController {
 
 
     @PutMapping("/updateAvator")
-    public Result updateAvator(@RequestParam @URL String avatorUrl) {
+    public Result updateAvator(@RequestParam String avatorUrl) {
+//    public Result updateAvator(@RequestParam @URL String avatorUrl) {
         userService.updateAvator(avatorUrl);
         return Result.success();
     }
@@ -92,9 +93,9 @@ public class UserController {
     @PutMapping("/updatePwd")
     public Result updatePassword(@RequestBody Map<String, String> params, @RequestHeader(name = "Authorization") String token) {
         //参数校验
-        String oldPwd = params.get("old_pwd");
-        String newPwd = params.get("new_pwd");
-        String rePwd = params.get("re_pwd");
+        String oldPwd = params.get("oldPwd");
+        String newPwd = params.get("newPwd");
+        String rePwd = params.get("rePwd");
         if (!(StringUtils.hasLength(oldPwd) && StringUtils.hasLength(newPwd) && StringUtils.hasLength(rePwd))) {
             return Result.error("参数错误");
         }
